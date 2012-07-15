@@ -14,8 +14,9 @@ public class PackageDetail extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.package_detail);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);	//Adding back ability to home icon in actionbar
         
+        //Grabbing all necessary strings from the bundle
         Bundle extras = getIntent().getExtras();
         String username = extras.getString("username");
         String fullname = extras.getString("fullname");
@@ -24,11 +25,13 @@ public class PackageDetail extends Activity {
         String version = extras.getString("version");
         String link = extras.getString("link");
         
+        //If the username is the same as the full name, or only a username was provided, just use the username
         if(fullname == null || fullname.equals(username)){
         	fullname = username;
         	username = "";
         }
         
+        //Grabbing our views
         TextView detailTitle = (TextView) findViewById(R.id.detail_title);
         TextView detailUsername = (TextView) findViewById(R.id.detail_author);
         TextView detailFullName = (TextView) findViewById(R.id.detail_author_name);
@@ -36,6 +39,7 @@ public class PackageDetail extends Activity {
         TextView detailVersion = (TextView) findViewById(R.id.detail_version);
         TextView detailLink = (TextView) findViewById(R.id.detail_link);
         
+        //Setting up our views
         detailTitle.setText(title);
         detailUsername.setText(username);
         detailFullName.setText(fullname);
@@ -54,7 +58,7 @@ public class PackageDetail extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // app icon in action bar clicked; go home
+                // Go back in the activity stack, more importantly to the list of packages yay!!
                 Intent intent = new Intent(this, pocket_npm.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
