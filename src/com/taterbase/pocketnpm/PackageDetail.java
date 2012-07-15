@@ -1,4 +1,6 @@
-package com.example.pocketnpm;
+package com.taterbase.pocketnpm;
+
+import com.taterbase.pocketnpm.R;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -61,7 +63,7 @@ public class PackageDetail extends Activity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 // Go back in the activity stack, more importantly to the list of packages yay!!
-                Intent intent = new Intent(this, pocket_npm.class);
+                Intent intent = new Intent(this, PocketNPM.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 return true;

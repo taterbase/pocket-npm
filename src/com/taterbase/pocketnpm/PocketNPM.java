@@ -1,4 +1,4 @@
-package com.example.pocketnpm;
+package com.taterbase.pocketnpm;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -13,19 +13,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.taterbase.pocketnpm.R;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,9 +39,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
-import android.support.v4.app.NavUtils;
 
-public class pocket_npm extends Activity {
+public class PocketNPM extends Activity {
 	private List<String> items = new ArrayList<String>();
 	private JSONArray arr;
 	private ArrayAdapter<String> adapter;
@@ -65,7 +66,7 @@ public class pocket_npm extends Activity {
         //Even though we haven't set a drawable yet, we want to set the footer for later
         lv.addFooterView(img);
         
-        //Creatinga nd setting the adapter to our items array of strings (titles of packages)
+        //Creating and setting the adapter to our items array of strings (titles of packages)
         adapter = new ArrayAdapter<String>(this, R.layout.list_item, items);
         lv.setAdapter(adapter);
         
@@ -76,11 +77,11 @@ public class pocket_npm extends Activity {
 					long arg3) {
 				
         		//Create intent for detail page
-				Intent intent = new Intent(pocket_npm.this, PackageDetail.class);
+				Intent intent = new Intent(PocketNPM.this, PackageDetail.class);
 				
 				JSONObject obj = null;
 				
-				/* The reasons for all of the try catches is for hackiness (for now). We're not sure
+				/* The reason for all of the try catches is for hackiness (for now). We're not sure
 				 * which elements of the JSON will actually be there. In the future we'll use introspection
 				 * to check for keys we want and group everything into a larger try catch
 				 */
@@ -117,7 +118,7 @@ public class pocket_npm extends Activity {
 				}
 				
 				try {
-					//If the repositor is listed and is a git repo, grab the url and use regex to remove git specific portions so we can link to it
+					//If the repository is listed and is a git repo, grab the url and use regex to remove git specific portions so we can link to it
 					if(obj.getJSONObject("repository").getString("type").equals("git"))
 						intent.putExtra("link", obj.getJSONObject("repository").getString("url").replaceAll("git://", "http://").replaceAll(".git$", ""));
 				} catch (JSONException e) {
