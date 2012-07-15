@@ -25,6 +25,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +33,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -42,6 +44,9 @@ public class pocket_npm extends Activity {
 	JSONArray arr;
 	ArrayAdapter<String> adapter;
 	ProgressDialog pg;
+	ListView lv;
+	ImageView img;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); 
@@ -49,8 +54,14 @@ public class pocket_npm extends Activity {
         
         getActionBar().setDisplayShowHomeEnabled(true);
         
-        ListView lv = (ListView)findViewById(R.id.package_list);
+        //Image we'll use for the shadow under the list
+        img = new ImageView(this);
+        
+        lv = (ListView)findViewById(R.id.package_list);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        
+        lv.addFooterView(img);
+        
         adapter = new ArrayAdapter<String>(this, R.layout.list_item, items);
         lv.setAdapter(adapter);
         
@@ -172,10 +183,17 @@ public class pocket_npm extends Activity {
             	items.clear();
 				arr = json.getJSONArray("rows");
 				for(int i = 0; i < arr.length(); ++i){
-					items	.add(arr.getJSONObject(i).getString("key"));
+					items.add(arr.getJSONObject(i).getString("key"));
 				}
 				adapter.notifyDataSetChanged();
 				pg.dismiss();
+				if(arr.length() > 0){
+					
+					img.setBackgroundResource(R.drawable.bottom_shadow);
+				}
+				else
+					img.setBackgroundResource(0);
+				
 				Log.d("LENGTH", arr.getJSONObject(2).getString("key"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
