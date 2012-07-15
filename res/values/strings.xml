@@ -1,0 +1,10 @@
+<resources>
+
+    <string name="app_name">pocket npm</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_pocket_npm">pocket npm</string>
+    <string name="hint">Search NPM</string>
+    <string name="title_activity_package_detail">PackageDetail</string>
+
+</resources>

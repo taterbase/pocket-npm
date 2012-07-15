@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        android:padding="35dp">
+
+    <TextView
+        android:id="@+id/detail_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="fancy-timestamp"
+        android:textSize="25sp" 
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/detail_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail_title"
+        android:layout_toRightOf="@+id/detail_author_name"
+        android:text="taterbase"
+        android:layout_marginTop="1dp"
+        android:textStyle="italic"
+        android:textSize="16sp"/>
+    
+    <TextView
+        android:id="@+id/detail_author_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail_title"
+        android:text="George Shank"
+        android:paddingRight="3dp"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/detail_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail_version"
+        android:layout_marginTop="5dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/detail_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/detail_description"
+        android:layout_below="@+id/detail_author_name"
+        android:text="latest(0.0.3)"
+        android:textStyle="bold"
+        android:layout_marginTop="29dp"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/detail_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/detail_description"
+        android:layout_below="@+id/detail_description"
+        android:text="http://google.com"
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"
+        android:autoLink="web"
+        android:textColorLink="#cc3d33" />
+</RelativeLayout>
