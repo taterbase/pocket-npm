@@ -46,6 +46,8 @@ public class PackageDetail extends Activity {
         detailDescription.setText(description);
         detailVersion.setText("latest("+version+")");
         detailLink.setText(link);
+        
+        setTitle("");
     }
 
     @Override

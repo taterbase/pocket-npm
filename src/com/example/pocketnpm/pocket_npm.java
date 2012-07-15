@@ -46,6 +46,7 @@ public class pocket_npm extends Activity {
 	private ProgressDialog pg;
 	private ListView lv;
 	private ImageView img;
+	private SearchView searchView;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -138,9 +139,25 @@ public class pocket_npm extends Activity {
         
         //This magic right here makes the action bar search and search button work together some how
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Keep actionbar search field always open
+        
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener( ) {
+            @Override
+            public boolean   onQueryTextChange( String newText ) {
+                //Will eventually set up instant search here, need to replicate the NPM db first
+            	clearList();
+                return true;
+            }
+
+			@Override
+			public boolean onQueryTextSubmit(String arg0) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+        });
+        
         
         return true;
     }
@@ -153,6 +170,9 @@ public class pocket_npm extends Activity {
 
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {	//When we get a search
+          searchView.clearFocus();	//Make the keyboard go down
+          clearList();
+          
           String query = intent.getStringExtra(SearchManager.QUERY);	//Grab the query
           query = query.split(" ")[0];	//"Explode" the query by its spaces and just use the first word for now. Ghetto I know, we'll think of something later.
           try {
@@ -197,9 +217,6 @@ public class pocket_npm extends Activity {
 			
 			//Now that we have our JSON object, let's parse out our packages
             try {
-            	items.clear();	//Clear out existing packages
-            	adapter.notifyDataSetChanged();
-            	
             	//Grab the array of packages
 				arr = json.getJSONArray("rows");
 				
@@ -260,6 +277,12 @@ public class pocket_npm extends Activity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    
+    private void clearList(){
+    	items.clear();
+    	adapter.notifyDataSetChanged();
+    	img.setBackgroundResource(0);
     }
     
 }
