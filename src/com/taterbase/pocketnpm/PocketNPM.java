@@ -175,13 +175,20 @@ public class PocketNPM extends Activity {
           clearList();
           
           String query = intent.getStringExtra(SearchManager.QUERY);	//Grab the query
-          query = query.split(" ")[0];	//"Explode" the query by its spaces and just use the first word for now. Ghetto I know, we'll think of something later.
+          String[] queryArr = query.split(" ");	//"Explode" the query by its spaces and just use the first word for now. Ghetto I know, we'll think of something later.
           try {
         	pg = ProgressDialog.show(this, "Loading", "Fetching hot javascript modules...");
 			
         	// Build our search query
-        	URL url = new URL("http://search.npmjs.org/_list/search/search?startkey=%22" + query + "%22&endkey=%22" + query + "ZZZZZZZZZZZZZZZZZZZ%22&limit=25");
-			new SearchNPM().execute(url);	//Running our async task to grab results
+//        	URL url = new URL("http://search.npmjs.org/_list/search/search?startkey=%22" + query + "%22&endkey=%22" + query + "ZZZZZZZZZZZZZZZZZZZ%22&limit=25");
+			String str = new String("http://pocketnpm.jit.su/search?0=");
+			for(int i = 0; i < queryArr.length; ++i){
+				str+= queryArr[i];
+				str+= "&"+ String.valueOf(i + 1) + "=";
+			}
+			Log.d("QUERY", str);
+        	URL url = new URL(str);
+        	new SearchNPM().execute(url);	//Running our async task to grab results
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			Toast.makeText(getApplicationContext(), "That url was baaaaaaad", Toast.LENGTH_SHORT).show();
@@ -236,7 +243,6 @@ public class PocketNPM extends Activity {
 				else //Otherwise remove any drawable
 					img.setBackgroundResource(0);
 				
-				Log.d("LENGTH", arr.getJSONObject(2).getString("key"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
