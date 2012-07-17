@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +49,17 @@ public class PocketNPM extends Activity {
 	private ListView lv;
 	private ImageView img;
 	private SearchView searchView;
+	private Random randInt = new Random();
+	
+	private String[] verses = {
+			"For Ryan Dahl so loved the world, that he gave his only begotten event loop, that whosoever performed async IO could have eternal callbacks.",
+	        "There is no event loop except for the Event Loop alone; and Isaacs is it's messenger.",
+	        "I can code all things through Node who events my IO.",
+	        "Ask not what Node can do for you, but how far you can nest your callbacks for Node.",
+	        "Happiness is when what you think, what you say, and what you do are in NodeJS.",
+	        "JavaScript is fun and so Node is fun. #jifasnif"
+	};
+	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +67,8 @@ public class PocketNPM extends Activity {
         setContentView(R.layout.activity_pocket_npm);
         
         getActionBar().setDisplayShowHomeEnabled(true);
+        
+        
         
         //Image we'll use for the shadow under the list
         img = new ImageView(this);
@@ -120,7 +134,7 @@ public class PocketNPM extends Activity {
 				try {
 					//If the repository is listed and is a git repo, grab the url and use regex to remove git specific portions so we can link to it
 					if(obj.getJSONObject("repository").getString("type").equals("git"))
-						intent.putExtra("link", obj.getJSONObject("repository").getString("url").replaceAll("git://", "http://").replaceAll(".git$", ""));
+						intent.putExtra("link", obj.getJSONObject("repository").getString("url").replaceAll("git://", "http://").replaceAll("git@", "http://").replaceAll("github.com:", "github.com/").replaceAll(".git$", ""));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -177,7 +191,10 @@ public class PocketNPM extends Activity {
           String query = intent.getStringExtra(SearchManager.QUERY);	//Grab the query
           String[] queryArr = query.split(" ");	//"Explode" the query by its spaces and just use the first word for now. Ghetto I know, we'll think of something later.
           try {
-        	pg = ProgressDialog.show(this, "Loading", "Fetching hot javascript modules...");
+        	int rand = randInt.nextInt((verses.length - 1));
+        	String message = verses[rand];
+        	
+        	pg = ProgressDialog.show(this, "Loading", message);
 			
         	// Build our search query
 //        	URL url = new URL("http://search.npmjs.org/_list/search/search?startkey=%22" + query + "%22&endkey=%22" + query + "ZZZZZZZZZZZZZZZZZZZ%22&limit=25");
