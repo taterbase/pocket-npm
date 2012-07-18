@@ -1,4 +1,4 @@
-<img src="ic_launcher-web.png" />
+<img src="pocket-npm/blob/master/ic_launcher-web.png" />
 #Pocket NPM
 
 <hr />
