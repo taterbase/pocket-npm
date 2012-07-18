@@ -65,11 +65,7 @@ public class PocketNPM extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); 
         setContentView(R.layout.activity_pocket_npm);
-        
-        getActionBar().setDisplayShowHomeEnabled(true);
-        
-        
-        
+       
         //Image we'll use for the shadow under the list
         img = new ImageView(this);
         
@@ -219,7 +215,7 @@ public class PocketNPM extends Activity {
     	String response = "";	//Initializing the response string
     	
         protected Long doInBackground(URL... urls) {	//Due to the rigidity of doInBackground we have to expect an array of urls
-            Log.d("BACK", "I'm in the background son!");	//Oh hey! Look, we're actually doing work now. Thank god.
+            Log.d("BACK", "I'm in the background son!");	//Oh hey! Look, we're actually doing work now.
             try {
 				response = HTTPRequest(urls[0]);	//We know we only got one URL, just use that
 			} catch (IOException e) {
@@ -234,7 +230,7 @@ public class PocketNPM extends Activity {
             JSONObject json = null;
             //Now we have our results. Show them to the user
             try {
-				json = new JSONObject(response);	//I think this may be a massive bottleneck
+				json = new JSONObject(response);	//This is slow. Slim down the JSON on the server as much as possible before this point
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
