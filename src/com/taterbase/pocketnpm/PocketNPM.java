@@ -14,42 +14,36 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.taterbase.pocketnpm.R;
-
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.Toast;
 
-public class PocketNPM extends Activity {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.taterbase.widget.MenuItemSearchAction;
+import com.taterbase.widget.SearchPerformListener;
+
+public class PocketNPM extends SherlockActivity implements SearchPerformListener {
 	private List<String> items = new ArrayList<String>();
 	private JSONArray arr;
 	private ArrayAdapter<String> adapter;
 	private ProgressDialog pg;
 	private ListView lv;
 	private ImageView img;
-	private SearchView searchView;
+	private MenuItemSearchAction searchView;
 	private Random randInt = new Random();
+	
+	private final String QUERY = "QUERY";
 	
 	private String[] verses = {
 			"For Ryan Dahl so loved the world, that he gave his only begotten event loop, that whosoever performed async IO could have eternal callbacks.",
@@ -144,34 +138,19 @@ public class PocketNPM extends Activity {
 
     @Override	//Creating our options!
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_pocket_npm, menu);
-        
-        // Get the SearchView and set the searchable configuration
-        
-        //This magic right here makes the action bar search and search button work together some how
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false); // Keep actionbar search field always open
-        
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener( ) {
-            @Override
-            public boolean   onQueryTextChange( String newText ) {
-                //Will eventually set up instant search here, need to replicate the NPM db first
-            	clearList();
-                return true;
-            }
-
-			@Override
-			public boolean onQueryTextSubmit(String arg0) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-        });
-        
-        
+    	searchView = new MenuItemSearchAction(getApplicationContext(), menu, this);
         return true;
     }
+    
+	@Override
+	public void performSearch(String query) {
+		clearList();
+		Intent searchIntent = new Intent(this, PocketNPM.class);
+		searchIntent.setAction(Intent.ACTION_SEARCH);
+		searchIntent.putExtra(QUERY, query);
+		
+		startActivity(searchIntent);
+	}
     
     @Override	//Where we're expecting search intents to come through
     protected void onNewIntent(Intent intent) {
@@ -184,7 +163,7 @@ public class PocketNPM extends Activity {
           searchView.clearFocus();	//Make the keyboard go down
           clearList();
           
-          String query = intent.getStringExtra(SearchManager.QUERY);	//Grab the query
+          String query = intent.getStringExtra(QUERY);	//Grab the query
           String[] queryArr = query.split(" ");	//"Explode" the query by its spaces and just use the first word for now. Ghetto I know, we'll think of something later.
           try {
         	int rand = randInt.nextInt((verses.length - 1));
@@ -210,11 +189,10 @@ public class PocketNPM extends Activity {
         }
     }
     
-    private class SearchNPM extends AsyncTask<URL, Integer, Long> {
-    	long whyDoINeedThis = 1;	//I have to return a long? Like, it's mandatory? Why?
+    private class SearchNPM extends AsyncTask<URL, Integer, Void> {
     	String response = "";	//Initializing the response string
     	
-        protected Long doInBackground(URL... urls) {	//Due to the rigidity of doInBackground we have to expect an array of urls
+        protected Void doInBackground(URL... urls) {	//Due to the rigidity of doInBackground we have to expect an array of urls
             Log.d("BACK", "I'm in the background son!");	//Oh hey! Look, we're actually doing work now.
             try {
 				response = HTTPRequest(urls[0]);	//We know we only got one URL, just use that
@@ -222,10 +200,10 @@ public class PocketNPM extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-            return whyDoINeedThis;	//Again, why?
+            return null;
         }
 
-        protected void onPostExecute(Long result) {
+        protected void onPostExecute(Void none) {
             Log.d("DONE", "I'm done dood");
             JSONObject json = null;
             //Now we have our results. Show them to the user
@@ -304,5 +282,4 @@ public class PocketNPM extends Activity {
     	adapter.notifyDataSetChanged();
     	img.setBackgroundResource(0);
     }
-    
 }
