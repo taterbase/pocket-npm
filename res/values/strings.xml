@@ -1,9 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-
     <string name="app_name">Pocket NPM</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_pocket_npm">Pocket NPM</string>
     <string name="hint">Search NPM</string>
     <string name="title_activity_package_detail">PackageDetail</string>
-
+    <string name="menu_item_search_action_hint">Your Search Query</string>
+    <string name="menu_item_search_action_menu_text">Search</string>
+    <string name="NPM_red">#CC3D33</string>
 </resources>

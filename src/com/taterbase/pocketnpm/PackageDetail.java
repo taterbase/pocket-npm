@@ -1,22 +1,20 @@
 package com.taterbase.pocketnpm;
 
-import com.taterbase.pocketnpm.R;
-
-import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.os.Bundle;
 import android.widget.TextView;
-import android.support.v4.app.NavUtils;
 
-public class PackageDetail extends Activity {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
+public class PackageDetail extends SherlockActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.package_detail);
-        getActionBar().setDisplayHomeAsUpEnabled(true);	//Adding back ability to home icon in actionbar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);	//Adding back ability to home icon in actionbar
         
         //Grabbing all necessary strings from the bundle
         Bundle extras = getIntent().getExtras();
@@ -54,7 +52,7 @@ public class PackageDetail extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_package_detail, menu);
+        getSupportMenuInflater().inflate(R.menu.activity_package_detail, menu);
         return true;
     }
 
