@@ -194,7 +194,7 @@ public class PocketNPM extends Activity {
 			
         	// Build our search query
 //        	URL url = new URL("http://search.npmjs.org/_list/search/search?startkey=%22" + query + "%22&endkey=%22" + query + "ZZZZZZZZZZZZZZZZZZZ%22&limit=25");
-			String str = new String("http://pocketnpm.jit.su/search?0=");
+			String str = new String("http://pocketnpm.schrodingerdb.com/search?0=");
 			for(int i = 0; i < queryArr.length; ++i){
 				str+= queryArr[i];
 				str+= "&"+ String.valueOf(i + 1) + "=";
